@@ -104,6 +104,24 @@ func (z *Int) Mul(x, y *Int) *Int {
 	return z
 }
 
+// Sqrt sets z to ⌊√x⌋, the largest integer such that z² ≤ x, and returns z.
+// It panics if x is negative.
+func (z *Int) Sqrt(x *Int) *Int {
+	if x.neg {
+		panic("square root of negative number")
+	}
+	z.neg = false
+	z.abs = z.abs.Sqrt(x.abs)
+	return z
+}
+
+// Rsh sets z = x >> n and returns z.
+func (z *Int) Rsh(x *Int, n uint) *Int {
+	z.abs.Rsh(x.abs, n)
+	z.neg = x.neg
+	return z
+}
+
 // Quo sets z to the quotient x/y for y != 0 and returns z.
 // If y == 0, a division-by-zero run-time panic occurs.
 // Quo implements truncated division (like Go); see QuoRem for more details.
@@ -120,4 +138,30 @@ func (z *Int) Rem(x, y *Int) *Int {
 	z.abs.Mod(x.abs, y.abs)
 	z.neg = len(z.abs) > 0 && x.neg // 0 has no sign
 	return z
+}
+
+// Cmp compares x and y and returns:
+//
+//	-1 if x <  y
+//	 0 if x == y
+//	+1 if x >  y
+func (x *Int) Cmp(y *Int) (r int) {
+	// x cmp y == x cmp y
+	// x cmp (-y) == x
+	// (-x) cmp y == y
+	// (-x) cmp (-y) == -(x cmp y)
+	switch {
+	case x == y:
+		// nothing to do
+	case x.neg == y.neg:
+		r = x.abs.Cmp(y.abs)
+		if x.neg {
+			r = -r
+		}
+	case x.neg:
+		r = -1
+	default:
+		r = 1
+	}
+	return
 }
