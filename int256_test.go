@@ -404,3 +404,80 @@ func TestInt_Sqrt(t *testing.T) {
 		})
 	}
 }
+
+func TestInt_SetString(t *testing.T) {
+	type fields struct {
+		abs *uint256.Int
+		neg bool
+	}
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		want    *Int
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+		{
+			name: "Should return correct value when parsing correct string value",
+			fields: fields{
+				abs: uint256.NewInt(0),
+				neg: false,
+			},
+			args: args{
+				s: "10",
+			},
+			want: &Int{
+				abs: uint256.NewInt(10),
+				neg: false,
+			},
+			wantErr: false,
+		},
+		{
+			name: "Should return correct value when parsing correct string value",
+			fields: fields{
+				abs: uint256.NewInt(0),
+				neg: false,
+			},
+			args: args{
+				s: "-10",
+			},
+			want: &Int{
+				abs: uint256.NewInt(10),
+				neg: true,
+			},
+			wantErr: false,
+		},
+		{
+			name: "Should return error value when parsing incorrect string value",
+			fields: fields{
+				abs: uint256.NewInt(0),
+				neg: false,
+			},
+			args: args{
+				s: "-10a",
+			},
+			want:    nil,
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			z := &Int{
+				abs: tt.fields.abs,
+				neg: tt.fields.neg,
+			}
+			got, err := z.SetString(tt.args.s)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Int.SetString() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Int.SetString() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
