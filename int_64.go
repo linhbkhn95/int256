@@ -7,3 +7,11 @@ func (z *Int) Int64() int64 {
 	}
 	return int64(absUint64)
 }
+
+func (z *Int) String() string {
+	s := z.abs.ToBig().String()
+	if !z.neg {
+		return s
+	}
+	return "-" + s
+}

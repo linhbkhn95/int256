@@ -18,8 +18,8 @@ func (z *Int) ToBig() *big.Int {
 }
 
 func MustFromBig(x *big.Int) *Int {
-	big, ok := FromBig(x)
-	if !ok {
+	big, overflow := FromBig(x)
+	if overflow {
 		panic("cannot parsing from big.Int")
 	}
 	return big
@@ -32,12 +32,12 @@ func FromBig(x *big.Int) (*Int, bool) {
 		num = new(big.Int).Mul(x, negativeOneBigInt)
 		neg = true
 	}
-	abs, ok := uint256.FromBig(num)
-	if !ok {
-		return nil, false
+	abs, overflow := uint256.FromBig(num)
+	if overflow {
+		return nil, true
 	}
 	return &Int{
 		abs,
 		neg,
-	}, true
+	}, false
 }

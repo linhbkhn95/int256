@@ -6,7 +6,7 @@ import (
 	"github.com/holiman/uint256"
 )
 
-// var one = uint256.NewInt(1)
+var one = uint256.NewInt(1)
 
 type Int struct {
 	abs *uint256.Int
@@ -18,14 +18,20 @@ type Int struct {
 //	-1 if x <  0
 //	 0 if x == 0
 //	+1 if x >  0
-func (x *Int) Sign() int {
-	if len(x.abs) == 0 {
+func (z *Int) Sign() int {
+	if len(z.abs) == 0 {
 		return 0
 	}
-	if x.neg {
+	if z.neg {
 		return -1
 	}
 	return 1
+}
+
+func New() *Int {
+	return &Int{
+		abs: new(uint256.Int),
+	}
 }
 
 // SetInt64 sets z to x and returns z.
@@ -35,6 +41,9 @@ func (z *Int) SetInt64(x int64) *Int {
 		neg = true
 		x = -x
 	}
+	if z.abs == nil {
+		panic("abs is nil")
+	}
 	z.abs = z.abs.SetUint64(uint64(x))
 	z.neg = neg
 	return z
@@ -42,6 +51,9 @@ func (z *Int) SetInt64(x int64) *Int {
 
 // SetUint64 sets z to x and returns z.
 func (z *Int) SetUint64(x uint64) *Int {
+	if z.abs == nil {
+		panic("abs is nil")
+	}
 	z.abs = z.abs.SetUint64(x)
 	z.neg = false
 	return z
@@ -49,7 +61,7 @@ func (z *Int) SetUint64(x uint64) *Int {
 
 // NewInt allocates and returns a new Int set to x.
 func NewInt(x int64) *Int {
-	return new(Int).SetInt64(x)
+	return New().SetInt64(x)
 }
 
 // SetUint64 sets z to x and returns z.
@@ -106,7 +118,7 @@ func (z *Int) Add(x, y *Int) *Int {
 			z.abs = z.abs.Sub(y.abs, x.abs)
 		}
 	}
-	z.neg = len(z.abs) > 0 && neg // 0 has no sign
+	z.neg = neg // 0 has no sign
 	return z
 }
 
@@ -127,23 +139,14 @@ func (z *Int) Sub(x, y *Int) *Int {
 			z.abs = z.abs.Sub(y.abs, x.abs)
 		}
 	}
-	z.neg = len(z.abs) > 0 && neg // 0 has no sign
+	z.neg = neg // 0 has no sign
 	return z
 }
 
 // Mul sets z to the product x*y and returns z.
 func (z *Int) Mul(x, y *Int) *Int {
-	// x * y == x * y
-	// x * (-y) == -(x * y)
-	// (-x) * y == -(x * y)
-	// (-x) * (-y) == x * y
-	if x == y {
-		z.abs = z.abs.Sqrt(x.abs)
-		z.neg = false
-		return z
-	}
 	z.abs = z.abs.Mul(x.abs, y.abs)
-	z.neg = len(z.abs) > 0 && x.neg != y.neg // 0 has no sign
+	z.neg = x.neg != y.neg // 0 has no sign
 	return z
 }
 
@@ -160,9 +163,14 @@ func (z *Int) Sqrt(x *Int) *Int {
 
 // Rsh sets z = x >> n and returns z.
 func (z *Int) Rsh(x *Int, n uint) *Int {
-	z.abs.Rsh(x.abs, n)
-	z.neg = x.neg
-	return z
+	if !x.neg {
+		z.abs.Rsh(x.abs, n)
+		z.neg = x.neg
+		return z
+	}
+	// TODO: implement
+	b := x.ToBig()
+	return MustFromBig(b.Rsh(b, n))
 }
 
 // Quo sets z to the quotient x/y for y != 0 and returns z.
@@ -188,20 +196,20 @@ func (z *Int) Rem(x, y *Int) *Int {
 //	-1 if x <  y
 //	 0 if x == y
 //	+1 if x >  y
-func (x *Int) Cmp(y *Int) (r int) {
+func (z *Int) Cmp(x *Int) (r int) {
 	// x cmp y == x cmp y
 	// x cmp (-y) == x
 	// (-x) cmp y == y
 	// (-x) cmp (-y) == -(x cmp y)
 	switch {
-	case x == y:
+	case z == x:
 		// nothing to do
-	case x.neg == y.neg:
-		r = x.abs.Cmp(y.abs)
-		if x.neg {
+	case z.neg == x.neg:
+		r = z.abs.Cmp(x.abs)
+		if z.neg {
 			r = -r
 		}
-	case x.neg:
+	case z.neg:
 		r = -1
 	default:
 		r = 1
@@ -216,12 +224,20 @@ func (x *Int) Cmp(y *Int) (r int) {
 // Modular exponentiation of inputs of a particular size is not a
 // cryptographically constant-time operation.
 func (z *Int) Exp(x, y, m *Int) *Int {
-	if !x.neg && !y.neg {
+	if x == nil {
+		panic("x is nil")
+	}
+	if !x.neg && !y.neg && m == nil {
 		z.neg = false
 		z.abs.Exp(x.abs, y.abs)
+		return z
 	}
 	// TODO: implement
-	big := new(big.Int).Exp(x.ToBig(), y.ToBig(), m.ToBig())
+	var mBigInt *big.Int
+	if m != nil {
+		mBigInt = m.ToBig()
+	}
+	big := new(big.Int).Exp(x.ToBig(), y.ToBig(), mBigInt)
 	z, _ = FromBig(big)
 	return z
 }
@@ -237,37 +253,76 @@ func (z *Int) Div(x, y *Int) *Int {
 
 // Lsh sets z = x << n and returns z.
 func (z *Int) Lsh(x *Int, n uint) *Int {
-	z.abs = z.abs.Lsh(x.abs, n)
+	z.abs.Lsh(x.abs, n)
 	z.neg = x.neg
 	return z
 }
 
-// // Or sets z = x | y and returns z.
-// func (z *Int) Or(x, y *Int) *Int {
-// 	if x.neg == y.neg {
-// 		if x.neg {
-// 			// (-x) | (-y) == ^(x-1) | ^(y-1) == ^((x-1) & (y-1)) == -(((x-1) & (y-1)) + 1)
-// 			x1 := new(uint256.Int).Sub(x.abs, one)
-// 			y1 := new(uint256.Int).Sub(y.abs, one)
-// 			z.abs = z.abs.Add(z.abs.And(x1, y1), one)
-// 			z.neg = true // z cannot be zero if x and y are negative
-// 			return z
-// 		}
+// Or sets z = x | y and returns z.
+func (z *Int) Or(x, y *Int) *Int {
+	if x.neg == y.neg {
+		if x.neg {
+			// (-x) | (-y) == ^(x-1) | ^(y-1) == ^((x-1) & (y-1)) == -(((x-1) & (y-1)) + 1)
+			x1 := new(uint256.Int).Sub(x.abs, one)
+			y1 := new(uint256.Int).Sub(y.abs, one)
+			z.abs = z.abs.Add(z.abs.And(x1, y1), one)
+			z.neg = true // z cannot be zero if x and y are negative
+			return z
+		}
 
-// 		// x | y == x | y
-// 		z.abs = z.abs.Or(x.abs, y.abs)
-// 		z.neg = false
-// 		return z
-// 	}
+		// x | y == x | y
+		z.abs = z.abs.Or(x.abs, y.abs)
+		z.neg = false
+		return z
+	}
 
-// 	// x.neg != y.neg
-// 	if x.neg {
-// 		x, y = y, x // | is symmetric
-// 	}
+	// // x.neg != y.neg
+	// if x.neg {
+	// 	x, y = y, x // | is symmetric
+	// }
 
-// 	// x | (-y) == x | ^(y-1) == ^((y-1) &^ x) == -(^((y-1) &^ x) + 1)
-// 	y1 := new(uint256.Int).Sub(y.abs, one)
-// 	z.abs = z.abs.Add(z.abs.andNot(y1, x.abs), one)
-// 	z.neg = true // z cannot be zero if one of x or y is negative
-// 	return z
-// }
+	// // x | (-y) == x | ^(y-1) == ^((y-1) &^ x) == -(^((y-1) &^ x) + 1)
+	// y1 := new(uint256.Int).Sub(y.abs, one)
+	// z.abs = z.abs.Add(z.abs.andNot(y1, x.abs), one)
+	// z.neg = true // z cannot be zero if one of x or y is negative
+
+	// TODO: implement
+	big := new(big.Int).Or(x.ToBig(), y.ToBig())
+	z = MustFromBig(big)
+	return z
+}
+
+// And sets z = x & y and returns z.
+func (z *Int) And(x, y *Int) *Int {
+	if x.neg == y.neg {
+		if x.neg {
+			// (-x) & (-y) == ^(x-1) & ^(y-1) == ^((x-1) | (y-1)) == -(((x-1) | (y-1)) + 1)
+			x1 := new(uint256.Int).Sub(x.abs, one)
+			y1 := new(uint256.Int).Sub(y.abs, one)
+			z.abs = z.abs.Add(z.abs.Or(x1, y1), one)
+			z.neg = true // z cannot be zero if x and y are negative
+			return z
+		}
+
+		// x & y == x & y
+		z.abs = z.abs.And(x.abs, y.abs)
+		z.neg = false
+		return z
+	}
+
+	// // x.neg != y.neg
+	// if x.neg {
+	// 	x, y = y, x // & is symmetric
+	// }
+
+	// // x & (-y) == x & ^(y-1) == x &^ (y-1)
+	// y1 := nat(nil).sub(y.abs, natOne)
+	// z.abs = z.abs.andNot(x.abs, y1)
+	// z.neg = false
+	// return z
+
+	// TODO: implement
+	big := new(big.Int).And(x.ToBig(), y.ToBig())
+	z = MustFromBig(big)
+	return z
+}
