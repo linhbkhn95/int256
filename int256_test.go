@@ -414,7 +414,12 @@ func TestInt_SetString(t *testing.T) {
 	type args struct {
 		s string
 	}
+	big1, _ := new(big.Int).SetString("-10a", 16)
+
+	var MaxUint256, _ = new(big.Int).SetString("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", 16)
+
 	big, _ := new(big.Int).SetString("1461446703485210103287273052203988822378723970342", 10)
+
 	tests := []struct {
 		name    string
 		fields  fields
@@ -462,8 +467,8 @@ func TestInt_SetString(t *testing.T) {
 			args: args{
 				s: "-10a",
 			},
-			want:    nil,
-			wantErr: true,
+			want:    MustFromBig(big1),
+			wantErr: false,
 		},
 		{
 			name: "Should return error value when parsing correct string value",
@@ -475,6 +480,18 @@ func TestInt_SetString(t *testing.T) {
 				s: "1461446703485210103287273052203988822378723970342",
 			},
 			want:    MustFromBig(big),
+			wantErr: false,
+		},
+		{
+			name: "Should return error value when parsing correct string value",
+			fields: fields{
+				abs: uint256.NewInt(0),
+				neg: false,
+			},
+			args: args{
+				s: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+			},
+			want:    MustFromBig(MaxUint256),
 			wantErr: false,
 		},
 	}

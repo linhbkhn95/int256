@@ -66,6 +66,7 @@ func NewInt(x int64) *Int {
 
 // SetUint64 sets z to x and returns z.
 func (z *Int) SetString(s string) (*Int, error) {
+	origin := s
 	neg := false
 	// Remove max one leading +
 	if len(s) > 0 && s[0] == '+' {
@@ -77,11 +78,20 @@ func (z *Int) SetString(s string) (*Int, error) {
 		neg = true
 		s = s[1:]
 	}
-
-	abs, err := uint256.FromDecimal(s)
+	var (
+		abs *uint256.Int
+		err error
+	)
+	abs, err = uint256.FromDecimal(s)
 	if err != nil {
-		return nil, err
+		// TODO: parse base as input param
+		b, ok := new(big.Int).SetString(origin, 16)
+		if !ok {
+			return nil, err
+		}
+		return MustFromBig(b), nil
 	}
+
 	return &Int{
 		abs,
 		neg,
@@ -246,8 +256,9 @@ func (z *Int) Div(x, y *Int) *Int {
 	z.abs.Div(x.abs, y.abs)
 	if x.neg == y.neg {
 		z.neg = false
+	} else {
+		z.neg = true
 	}
-	z.neg = true
 	return z
 }
 
