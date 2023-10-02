@@ -112,6 +112,8 @@ func (z *Int) SetString(s string) (*Int, error) {
 // }
 
 func (z *Int) Add(x, y *Int) *Int {
+	z = z.setZero()
+
 	neg := x.neg
 
 	if x.neg == y.neg {
@@ -134,6 +136,8 @@ func (z *Int) Add(x, y *Int) *Int {
 
 // Sub sets z to the difference x-y and returns z.
 func (z *Int) Sub(x, y *Int) *Int {
+	z = z.setZero()
+
 	neg := x.neg
 	if x.neg != y.neg {
 		// x - (-y) == x + y
@@ -155,6 +159,8 @@ func (z *Int) Sub(x, y *Int) *Int {
 
 // Mul sets z to the product x*y and returns z.
 func (z *Int) Mul(x, y *Int) *Int {
+	z = z.setZero()
+
 	z.abs = z.abs.Mul(x.abs, y.abs)
 	z.neg = x.neg != y.neg // 0 has no sign
 	return z
@@ -163,6 +169,8 @@ func (z *Int) Mul(x, y *Int) *Int {
 // Sqrt sets z to ⌊√x⌋, the largest integer such that z² ≤ x, and returns z.
 // It panics if x is negative.
 func (z *Int) Sqrt(x *Int) *Int {
+	z = z.setZero()
+
 	if x.neg {
 		panic("square root of negative number")
 	}
@@ -173,6 +181,8 @@ func (z *Int) Sqrt(x *Int) *Int {
 
 // Rsh sets z = x >> n and returns z.
 func (z *Int) Rsh(x *Int, n uint) *Int {
+	z = z.setZero()
+
 	if !x.neg {
 		z.abs.Rsh(x.abs, n)
 		z.neg = x.neg
@@ -187,6 +197,8 @@ func (z *Int) Rsh(x *Int, n uint) *Int {
 // If y == 0, a division-by-zero run-time panic occurs.
 // Quo implements truncated division (like Go); see QuoRem for more details.
 func (z *Int) Quo(x, y *Int) *Int {
+	z = z.setZero()
+
 	z.abs = z.abs.Div(x.abs, y.abs)
 	z.neg = len(z.abs) > 0 && x.neg != y.neg // 0 has no sign
 	return z
@@ -196,6 +208,8 @@ func (z *Int) Quo(x, y *Int) *Int {
 // If y == 0, a division-by-zero run-time panic occurs.
 // Rem implements truncated modulus (like Go); see QuoRem for more details.
 func (z *Int) Rem(x, y *Int) *Int {
+	z = z.setZero()
+
 	z.abs.Mod(x.abs, y.abs)
 	z.neg = len(z.abs) > 0 && x.neg // 0 has no sign
 	return z
@@ -207,6 +221,8 @@ func (z *Int) Rem(x, y *Int) *Int {
 //	 0 if x == y
 //	+1 if x >  y
 func (z *Int) Cmp(x *Int) (r int) {
+	z = z.setZero()
+
 	// x cmp y == x cmp y
 	// x cmp (-y) == x
 	// (-x) cmp y == y
@@ -234,6 +250,8 @@ func (z *Int) Cmp(x *Int) (r int) {
 // Modular exponentiation of inputs of a particular size is not a
 // cryptographically constant-time operation.
 func (z *Int) Exp(x, y, m *Int) *Int {
+	z = z.setZero()
+
 	if x == nil {
 		panic("x is nil")
 	}
@@ -253,6 +271,8 @@ func (z *Int) Exp(x, y, m *Int) *Int {
 }
 
 func (z *Int) Div(x, y *Int) *Int {
+	z = z.setZero()
+
 	z.abs.Div(x.abs, y.abs)
 	if x.neg == y.neg {
 		z.neg = false
@@ -264,6 +284,7 @@ func (z *Int) Div(x, y *Int) *Int {
 
 // Lsh sets z = x << n and returns z.
 func (z *Int) Lsh(x *Int, n uint) *Int {
+	z = z.setZero()
 	b := new(big.Int).Lsh(x.abs.ToBig(), n)
 	z.abs = uint256.MustFromBig(b)
 	z.neg = x.neg
@@ -272,6 +293,8 @@ func (z *Int) Lsh(x *Int, n uint) *Int {
 
 // Or sets z = x | y and returns z.
 func (z *Int) Or(x, y *Int) *Int {
+	z = z.setZero()
+
 	if x.neg == y.neg {
 		if x.neg {
 			// (-x) | (-y) == ^(x-1) | ^(y-1) == ^((x-1) & (y-1)) == -(((x-1) & (y-1)) + 1)
@@ -306,6 +329,8 @@ func (z *Int) Or(x, y *Int) *Int {
 
 // And sets z = x & y and returns z.
 func (z *Int) And(x, y *Int) *Int {
+	z = z.setZero()
+
 	if x.neg == y.neg {
 		if x.neg {
 			// (-x) & (-y) == ^(x-1) & ^(y-1) == ^((x-1) | (y-1)) == -(((x-1) | (y-1)) + 1)
@@ -336,5 +361,14 @@ func (z *Int) And(x, y *Int) *Int {
 	// TODO: implement
 	big := new(big.Int).And(x.ToBig(), y.ToBig())
 	z = MustFromBig(big)
+	return z
+}
+
+// setZero sets default `0` value if `z` is nil
+func (z *Int) setZero() *Int {
+	if z.abs == nil {
+		return New()
+	}
+
 	return z
 }
