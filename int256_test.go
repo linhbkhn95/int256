@@ -943,13 +943,13 @@ func TestInt_Lsh(t *testing.T) {
 		x *Int
 		n uint
 	}
+
 	tests := []struct {
 		name   string
 		fields fields
 		args   args
 		want   *Int
 	}{
-		// TODO: Add test cases.
 		{
 			name: "Should return correct value",
 			fields: fields{
@@ -966,7 +966,7 @@ func TestInt_Lsh(t *testing.T) {
 			want: MustFromBig(new(big.Int).Lsh(big.NewInt(10), 3)),
 		},
 		{
-			name: "Should return correct value",
+			name: "Should return correct value when process negative number and n is odd",
 			fields: fields{
 				abs: new(uint256.Int),
 				neg: false,
@@ -979,6 +979,21 @@ func TestInt_Lsh(t *testing.T) {
 				n: 3,
 			},
 			want: MustFromBig(new(big.Int).Lsh(big.NewInt(-10), 3)),
+		},
+		{
+			name: "Should return correct value when process negative number and n is even",
+			fields: fields{
+				abs: new(uint256.Int),
+				neg: false,
+			},
+			args: args{
+				x: &Int{
+					abs: uint256.NewInt(10),
+					neg: true,
+				},
+				n: 4,
+			},
+			want: MustFromBig(new(big.Int).Lsh(big.NewInt(-10), 4)),
 		},
 	}
 	for _, tt := range tests {
@@ -1379,5 +1394,3 @@ func TestInt_Cmp(t *testing.T) {
 		})
 	}
 }
-
-// tickHigh 887271 887272 -1461446703485210103287273052203988822378723970341 1461446703485210103287273052203988822378723970341

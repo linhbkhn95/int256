@@ -33,8 +33,28 @@ func FromBig(x *big.Int) (*Int, bool) {
 		neg = true
 	}
 	abs, overflow := uint256.FromBig(num)
+	/*
+		type Int [4]uint64
+		Currently, uint26 has maxWord is 4
+
+
+		bigInt has len(words) that can great than 4. So we can receive overflow error.
+
+		words := b.Bits()
+		overflow := len(words) > maxWords
+		ref from uint256 code
+		https://github.com/holiman/uint256/blob/master/conversion.go#L202
+	*/
 	if overflow {
-		return nil, true
+		abs, err := uint256.FromDecimal(x.String())
+		if err != nil {
+			return nil, overflow
+		}
+		neg = x.Sign() < 0
+		return &Int{
+			abs,
+			neg,
+		}, true
 	}
 	return &Int{
 		abs,

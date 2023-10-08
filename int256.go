@@ -264,7 +264,8 @@ func (z *Int) Div(x, y *Int) *Int {
 
 // Lsh sets z = x << n and returns z.
 func (z *Int) Lsh(x *Int, n uint) *Int {
-	z.abs.Lsh(x.abs, n)
+	b := new(big.Int).Lsh(x.abs.ToBig(), n)
+	z.abs = uint256.MustFromBig(b)
 	z.neg = x.neg
 	return z
 }
