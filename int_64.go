@@ -9,7 +9,7 @@ func (z *Int) Int64() int64 {
 }
 
 func (z *Int) String() string {
-	z = z.setZero()
+	z.initiateAbs()
 
 	s := z.abs.ToBig().String()
 	if !z.neg {
