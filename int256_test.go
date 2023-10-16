@@ -362,6 +362,21 @@ func TestInt_Mul(t *testing.T) {
 	}
 }
 
+func TestInt_MulPanic(t *testing.T) {
+	i256 := new(Int)
+
+	defer func() {
+		if r := recover(); r != nil {
+			t.Error("should not have paniced", r)
+		}
+	}()
+
+	res := i256.Mul(NewInt(1), NewInt(2))
+	if res.Cmp(NewInt(2)) != 0 {
+		t.Errorf("want: 2, got: %v", res)
+	}
+}
+
 func TestInt_Sqrt(t *testing.T) {
 	type fields struct {
 		abs *uint256.Int
