@@ -235,6 +235,8 @@ func (z *Int) Cmp(x *Int) (r int) {
 		if z.neg {
 			r = -r
 		}
+	case z.abs.IsZero() && x.abs.IsZero():
+		r = 0
 	case z.neg:
 		r = -1
 	default:

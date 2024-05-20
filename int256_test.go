@@ -1396,6 +1396,19 @@ func TestInt_Cmp(t *testing.T) {
 			},
 			wantR: 1,
 		},
+		{
+			name: "Should return correct value",
+			fields: fields{
+				abs: uint256.NewInt(0),
+				neg: true,
+			},
+			args: args{
+				x: &Int{
+					abs: uint256.NewInt(0),
+				},
+			},
+			wantR: 0,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
