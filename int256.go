@@ -7,6 +7,7 @@ import (
 )
 
 var one = uint256.NewInt(1)
+var maxUint256 = uint256.MustFromHex("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
 
 type Int struct {
 	abs *uint256.Int
@@ -313,19 +314,16 @@ func (z *Int) Or(x, y *Int) *Int {
 		return z
 	}
 
-	// // x.neg != y.neg
-	// if x.neg {
-	// 	x, y = y, x // | is symmetric
-	// }
+	// x.neg != y.neg
+	if x.neg {
+		x, y = y, x // | is symmetric
+	}
 
-	// // x | (-y) == x | ^(y-1) == ^((y-1) &^ x) == -(^((y-1) &^ x) + 1)
-	// y1 := new(uint256.Int).Sub(y.abs, one)
-	// z.abs = z.abs.Add(z.abs.andNot(y1, x.abs), one)
-	// z.neg = true // z cannot be zero if one of x or y is negative
+	// x | (-y) == x | ^(y-1) == ^((y-1) &^ x) == -(^((y-1) &^ x) + 1)
+	y1 := new(uint256.Int).Sub(y.abs, one)
+	z.abs = z.abs.Add(z.abs.And(y1, new(uint256.Int).Xor(x.abs, maxUint256)), one)
+	z.neg = true // z cannot be zero if one of x or y is negative
 
-	// TODO: implement
-	big := new(big.Int).Or(x.ToBig(), y.ToBig())
-	z = MustFromBig(big)
 	return z
 }
 
@@ -349,20 +347,16 @@ func (z *Int) And(x, y *Int) *Int {
 		return z
 	}
 
-	// // x.neg != y.neg
-	// if x.neg {
-	// 	x, y = y, x // & is symmetric
-	// }
+	// x.neg != y.neg
+	if x.neg {
+		x, y = y, x // & is symmetric
+	}
 
-	// // x & (-y) == x & ^(y-1) == x &^ (y-1)
-	// y1 := nat(nil).sub(y.abs, natOne)
-	// z.abs = z.abs.andNot(x.abs, y1)
-	// z.neg = false
-	// return z
+	// x & (-y) == x & ^(y-1) == x &^ (y-1)
+	y1 := new(uint256.Int).Sub(y.abs, one)
+	z.abs = z.abs.And(x.abs, new(uint256.Int).Xor(y1, maxUint256))
+	z.neg = false
 
-	// TODO: implement
-	big := new(big.Int).And(x.ToBig(), y.ToBig())
-	z = MustFromBig(big)
 	return z
 }
 
