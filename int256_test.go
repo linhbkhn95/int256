@@ -32,15 +32,15 @@ func TestInt_Add(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
+					Abs: uint256.NewInt(10),
 				},
 				y: &Int{
-					abs: uint256.NewInt(7),
+					Abs: uint256.NewInt(7),
 				},
 			},
 			want: &Int{
-				abs: uint256.NewInt(17),
-				neg: false,
+				Abs: uint256.NewInt(17),
+				Neg: false,
 			},
 		},
 		{
@@ -51,17 +51,17 @@ func TestInt_Add(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: true,
+					Abs: uint256.NewInt(10),
+					Neg: true,
 				},
 				y: &Int{
-					abs: uint256.NewInt(7),
-					neg: true,
+					Abs: uint256.NewInt(7),
+					Neg: true,
 				},
 			},
 			want: &Int{
-				abs: uint256.NewInt(17),
-				neg: true,
+				Abs: uint256.NewInt(17),
+				Neg: true,
 			},
 		},
 		{
@@ -72,17 +72,17 @@ func TestInt_Add(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: true,
+					Abs: uint256.NewInt(10),
+					Neg: true,
 				},
 				y: &Int{
-					abs: uint256.NewInt(7),
-					neg: false,
+					Abs: uint256.NewInt(7),
+					Neg: false,
 				},
 			},
 			want: &Int{
-				abs: uint256.NewInt(3),
-				neg: true,
+				Abs: uint256.NewInt(3),
+				Neg: true,
 			},
 		},
 		{
@@ -93,25 +93,25 @@ func TestInt_Add(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: false,
+					Abs: uint256.NewInt(10),
+					Neg: false,
 				},
 				y: &Int{
-					abs: uint256.NewInt(7),
-					neg: true,
+					Abs: uint256.NewInt(7),
+					Neg: true,
 				},
 			},
 			want: &Int{
-				abs: uint256.NewInt(3),
-				neg: false,
+				Abs: uint256.NewInt(3),
+				Neg: false,
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			z := &Int{
-				abs: tt.fields.abs,
-				neg: tt.fields.neg,
+				Abs: tt.fields.abs,
+				Neg: tt.fields.neg,
 			}
 			if got := z.Add(tt.args.x, tt.args.y); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Int.Add() = %v, want %v", got, tt.want)
@@ -144,15 +144,15 @@ func TestInt_Sub(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
+					Abs: uint256.NewInt(10),
 				},
 				y: &Int{
-					abs: uint256.NewInt(7),
+					Abs: uint256.NewInt(7),
 				},
 			},
 			want: &Int{
-				abs: uint256.NewInt(3),
-				neg: false,
+				Abs: uint256.NewInt(3),
+				Neg: false,
 			},
 		},
 		{
@@ -163,15 +163,15 @@ func TestInt_Sub(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(7),
+					Abs: uint256.NewInt(7),
 				},
 				y: &Int{
-					abs: uint256.NewInt(10),
+					Abs: uint256.NewInt(10),
 				},
 			},
 			want: &Int{
-				abs: uint256.NewInt(3),
-				neg: true,
+				Abs: uint256.NewInt(3),
+				Neg: true,
 			},
 		},
 		{
@@ -182,17 +182,17 @@ func TestInt_Sub(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: true,
+					Abs: uint256.NewInt(10),
+					Neg: true,
 				},
 				y: &Int{
-					abs: uint256.NewInt(7),
-					neg: true,
+					Abs: uint256.NewInt(7),
+					Neg: true,
 				},
 			},
 			want: &Int{
-				abs: uint256.NewInt(3),
-				neg: true,
+				Abs: uint256.NewInt(3),
+				Neg: true,
 			},
 		},
 		{
@@ -203,17 +203,17 @@ func TestInt_Sub(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(7),
-					neg: true,
+					Abs: uint256.NewInt(7),
+					Neg: true,
 				},
 				y: &Int{
-					abs: uint256.NewInt(10),
-					neg: true,
+					Abs: uint256.NewInt(10),
+					Neg: true,
 				},
 			},
 			want: &Int{
-				abs: uint256.NewInt(3),
-				neg: false,
+				Abs: uint256.NewInt(3),
+				Neg: false,
 			},
 		},
 		{
@@ -224,17 +224,17 @@ func TestInt_Sub(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: true,
+					Abs: uint256.NewInt(10),
+					Neg: true,
 				},
 				y: &Int{
-					abs: uint256.NewInt(7),
-					neg: false,
+					Abs: uint256.NewInt(7),
+					Neg: false,
 				},
 			},
 			want: &Int{
-				abs: uint256.NewInt(17),
-				neg: true,
+				Abs: uint256.NewInt(17),
+				Neg: true,
 			},
 		},
 		{
@@ -245,25 +245,25 @@ func TestInt_Sub(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: false,
+					Abs: uint256.NewInt(10),
+					Neg: false,
 				},
 				y: &Int{
-					abs: uint256.NewInt(7),
-					neg: true,
+					Abs: uint256.NewInt(7),
+					Neg: true,
 				},
 			},
 			want: &Int{
-				abs: uint256.NewInt(17),
-				neg: false,
+				Abs: uint256.NewInt(17),
+				Neg: false,
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			z := &Int{
-				abs: tt.fields.abs,
-				neg: tt.fields.neg,
+				Abs: tt.fields.abs,
+				Neg: tt.fields.neg,
 			}
 			if got := z.Sub(tt.args.x, tt.args.y); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Int.Sub() = %v, want %v", got, tt.want)
@@ -296,14 +296,14 @@ func TestInt_Mul(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(3),
+					Abs: uint256.NewInt(3),
 				},
 				y: &Int{
-					abs: uint256.NewInt(5),
+					Abs: uint256.NewInt(5),
 				},
 			},
 			want: &Int{
-				abs: uint256.NewInt(15),
+				Abs: uint256.NewInt(15),
 			},
 		},
 		{
@@ -314,17 +314,17 @@ func TestInt_Mul(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(3),
-					neg: true,
+					Abs: uint256.NewInt(3),
+					Neg: true,
 				},
 				y: &Int{
-					abs: uint256.NewInt(5),
-					neg: true,
+					Abs: uint256.NewInt(5),
+					Neg: true,
 				},
 			},
 			want: &Int{
-				abs: uint256.NewInt(15),
-				neg: false,
+				Abs: uint256.NewInt(15),
+				Neg: false,
 			},
 		},
 		{
@@ -335,25 +335,25 @@ func TestInt_Mul(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(3),
-					neg: true,
+					Abs: uint256.NewInt(3),
+					Neg: true,
 				},
 				y: &Int{
-					abs: uint256.NewInt(5),
-					neg: false,
+					Abs: uint256.NewInt(5),
+					Neg: false,
 				},
 			},
 			want: &Int{
-				abs: uint256.NewInt(15),
-				neg: true,
+				Abs: uint256.NewInt(15),
+				Neg: true,
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			z := &Int{
-				abs: tt.fields.abs,
-				neg: tt.fields.neg,
+				Abs: tt.fields.abs,
+				Neg: tt.fields.neg,
 			}
 			if got := z.Mul(tt.args.x, tt.args.y); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Int.Mul() = %v, want %v", got, tt.want)
@@ -400,19 +400,19 @@ func TestInt_Sqrt(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(9),
+					Abs: uint256.NewInt(9),
 				},
 			},
 			want: &Int{
-				abs: uint256.NewInt(3),
+				Abs: uint256.NewInt(3),
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			z := &Int{
-				abs: tt.fields.abs,
-				neg: tt.fields.neg,
+				Abs: tt.fields.abs,
+				Neg: tt.fields.neg,
 			}
 			if got := z.Sqrt(tt.args.x); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Int.Sqrt() = %v, want %v", got, tt.want)
@@ -453,8 +453,8 @@ func TestInt_SetString(t *testing.T) {
 				s: "10",
 			},
 			want: &Int{
-				abs: uint256.NewInt(10),
-				neg: false,
+				Abs: uint256.NewInt(10),
+				Neg: false,
 			},
 			wantErr: false,
 		},
@@ -468,8 +468,8 @@ func TestInt_SetString(t *testing.T) {
 				s: "-10",
 			},
 			want: &Int{
-				abs: uint256.NewInt(10),
-				neg: true,
+				Abs: uint256.NewInt(10),
+				Neg: true,
 			},
 			wantErr: false,
 		},
@@ -513,8 +513,8 @@ func TestInt_SetString(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			z := &Int{
-				abs: tt.fields.abs,
-				neg: tt.fields.neg,
+				Abs: tt.fields.abs,
+				Neg: tt.fields.neg,
 			}
 			got, err := z.SetString(tt.args.s)
 			if (err != nil) != tt.wantErr {
@@ -553,8 +553,8 @@ func TestInt_SetInt64(t *testing.T) {
 				x: 24,
 			},
 			want: &Int{
-				abs: uint256.NewInt(24),
-				neg: false,
+				Abs: uint256.NewInt(24),
+				Neg: false,
 			},
 		},
 		{
@@ -567,16 +567,16 @@ func TestInt_SetInt64(t *testing.T) {
 				x: -24,
 			},
 			want: &Int{
-				abs: uint256.NewInt(24),
-				neg: true,
+				Abs: uint256.NewInt(24),
+				Neg: true,
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			z := &Int{
-				abs: tt.fields.abs,
-				neg: tt.fields.neg,
+				Abs: tt.fields.abs,
+				Neg: tt.fields.neg,
 			}
 			if got := z.SetInt64(tt.args.x); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Int.SetInt64() = %v, want %v", got, tt.want)
@@ -629,8 +629,8 @@ func TestInt_Rsh(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			z := &Int{
-				abs: tt.fields.abs,
-				neg: tt.fields.neg,
+				Abs: tt.fields.abs,
+				Neg: tt.fields.neg,
 			}
 			if got := z.Rsh(tt.args.x, tt.args.n); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Int.Rsh() = %v, want %v", got, tt.want)
@@ -663,14 +663,14 @@ func TestInt_Rem(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
+					Abs: uint256.NewInt(10),
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
+					Abs: uint256.NewInt(3),
 				},
 			},
 			want: &Int{
-				abs: uint256.NewInt(1),
+				Abs: uint256.NewInt(1),
 			},
 		},
 		{
@@ -681,12 +681,12 @@ func TestInt_Rem(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: true,
+					Abs: uint256.NewInt(10),
+					Neg: true,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: true,
+					Abs: uint256.NewInt(3),
+					Neg: true,
 				},
 			},
 			want: MustFromBig(new(big.Int).Rem(big.NewInt(-10), big.NewInt(-3))),
@@ -699,12 +699,12 @@ func TestInt_Rem(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: false,
+					Abs: uint256.NewInt(10),
+					Neg: false,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: true,
+					Abs: uint256.NewInt(3),
+					Neg: true,
 				},
 			},
 			want: MustFromBig(new(big.Int).Rem(big.NewInt(10), big.NewInt(-3))),
@@ -717,12 +717,12 @@ func TestInt_Rem(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: false,
+					Abs: uint256.NewInt(10),
+					Neg: false,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: true,
+					Abs: uint256.NewInt(3),
+					Neg: true,
 				},
 			},
 			want: MustFromBig(new(big.Int).Rem(big.NewInt(10), big.NewInt(-3))),
@@ -731,8 +731,8 @@ func TestInt_Rem(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			z := &Int{
-				abs: tt.fields.abs,
-				neg: tt.fields.neg,
+				Abs: tt.fields.abs,
+				Neg: tt.fields.neg,
 			}
 			if got := z.Rem(tt.args.x, tt.args.y); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Int.Rem() = %v, want %v", got, tt.want)
@@ -766,16 +766,16 @@ func TestInt_Exp(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: false,
+					Abs: uint256.NewInt(10),
+					Neg: false,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: false,
+					Abs: uint256.NewInt(3),
+					Neg: false,
 				},
 				m: &Int{
-					abs: uint256.NewInt(3),
-					neg: false,
+					Abs: uint256.NewInt(3),
+					Neg: false,
 				},
 			},
 			want: MustFromBig(new(big.Int).Exp(big.NewInt(10), big.NewInt(3), big.NewInt(3))),
@@ -788,16 +788,16 @@ func TestInt_Exp(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: false,
+					Abs: uint256.NewInt(10),
+					Neg: false,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: false,
+					Abs: uint256.NewInt(3),
+					Neg: false,
 				},
 				m: &Int{
-					abs: uint256.NewInt(3),
-					neg: true,
+					Abs: uint256.NewInt(3),
+					Neg: true,
 				},
 			},
 			want: MustFromBig(new(big.Int).Exp(big.NewInt(10), big.NewInt(3), big.NewInt(-3))),
@@ -810,16 +810,16 @@ func TestInt_Exp(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: false,
+					Abs: uint256.NewInt(10),
+					Neg: false,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: true,
+					Abs: uint256.NewInt(3),
+					Neg: true,
 				},
 				m: &Int{
-					abs: uint256.NewInt(3),
-					neg: false,
+					Abs: uint256.NewInt(3),
+					Neg: false,
 				},
 			},
 			want: MustFromBig(new(big.Int).Exp(big.NewInt(10), big.NewInt(-3), big.NewInt(3))),
@@ -832,16 +832,16 @@ func TestInt_Exp(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: true,
+					Abs: uint256.NewInt(10),
+					Neg: true,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: false,
+					Abs: uint256.NewInt(3),
+					Neg: false,
 				},
 				m: &Int{
-					abs: uint256.NewInt(3),
-					neg: false,
+					Abs: uint256.NewInt(3),
+					Neg: false,
 				},
 			},
 			want: MustFromBig(new(big.Int).Exp(big.NewInt(-10), big.NewInt(3), big.NewInt(3))),
@@ -854,16 +854,16 @@ func TestInt_Exp(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: true,
+					Abs: uint256.NewInt(10),
+					Neg: true,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: true,
+					Abs: uint256.NewInt(3),
+					Neg: true,
 				},
 				m: &Int{
-					abs: uint256.NewInt(3),
-					neg: false,
+					Abs: uint256.NewInt(3),
+					Neg: false,
 				},
 			},
 			want: MustFromBig(new(big.Int).Exp(big.NewInt(-10), big.NewInt(-3), big.NewInt(3))),
@@ -876,16 +876,16 @@ func TestInt_Exp(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: true,
+					Abs: uint256.NewInt(10),
+					Neg: true,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: false,
+					Abs: uint256.NewInt(3),
+					Neg: false,
 				},
 				m: &Int{
-					abs: uint256.NewInt(3),
-					neg: true,
+					Abs: uint256.NewInt(3),
+					Neg: true,
 				},
 			},
 
@@ -899,16 +899,16 @@ func TestInt_Exp(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: false,
+					Abs: uint256.NewInt(10),
+					Neg: false,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: true,
+					Abs: uint256.NewInt(3),
+					Neg: true,
 				},
 				m: &Int{
-					abs: uint256.NewInt(3),
-					neg: true,
+					Abs: uint256.NewInt(3),
+					Neg: true,
 				},
 			},
 			want: MustFromBig(new(big.Int).Exp(big.NewInt(10), big.NewInt(-3), big.NewInt(-3))),
@@ -921,16 +921,16 @@ func TestInt_Exp(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: true,
+					Abs: uint256.NewInt(10),
+					Neg: true,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: true,
+					Abs: uint256.NewInt(3),
+					Neg: true,
 				},
 				m: &Int{
-					abs: uint256.NewInt(3),
-					neg: true,
+					Abs: uint256.NewInt(3),
+					Neg: true,
 				},
 			},
 			want: MustFromBig(new(big.Int).Exp(big.NewInt(-10), big.NewInt(-3), big.NewInt(-3))),
@@ -939,8 +939,8 @@ func TestInt_Exp(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			z := &Int{
-				abs: tt.fields.abs,
-				neg: tt.fields.neg,
+				Abs: tt.fields.abs,
+				Neg: tt.fields.neg,
 			}
 			if got := z.Exp(tt.args.x, tt.args.y, tt.args.m); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Int.Exp() = %v, want %v", got, tt.want)
@@ -973,8 +973,8 @@ func TestInt_Lsh(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: false,
+					Abs: uint256.NewInt(10),
+					Neg: false,
 				},
 				n: 3,
 			},
@@ -988,8 +988,8 @@ func TestInt_Lsh(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: true,
+					Abs: uint256.NewInt(10),
+					Neg: true,
 				},
 				n: 3,
 			},
@@ -1003,8 +1003,8 @@ func TestInt_Lsh(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: true,
+					Abs: uint256.NewInt(10),
+					Neg: true,
 				},
 				n: 4,
 			},
@@ -1014,8 +1014,8 @@ func TestInt_Lsh(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			z := &Int{
-				abs: tt.fields.abs,
-				neg: tt.fields.neg,
+				Abs: tt.fields.abs,
+				Neg: tt.fields.neg,
 			}
 			if got := z.Lsh(tt.args.x, tt.args.n); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Int.Lsh() = %v, want %v", got, tt.want)
@@ -1047,12 +1047,12 @@ func TestInt_Or(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: false,
+					Abs: uint256.NewInt(10),
+					Neg: false,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: false,
+					Abs: uint256.NewInt(3),
+					Neg: false,
 				},
 			},
 			want: MustFromBig(new(big.Int).Or(big.NewInt(10), big.NewInt(3))),
@@ -1065,12 +1065,12 @@ func TestInt_Or(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: true,
+					Abs: uint256.NewInt(10),
+					Neg: true,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: false,
+					Abs: uint256.NewInt(3),
+					Neg: false,
 				},
 			},
 			want: MustFromBig(new(big.Int).Or(big.NewInt(-10), big.NewInt(3))),
@@ -1083,12 +1083,12 @@ func TestInt_Or(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: false,
+					Abs: uint256.NewInt(10),
+					Neg: false,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: true,
+					Abs: uint256.NewInt(3),
+					Neg: true,
 				},
 			},
 			want: MustFromBig(new(big.Int).Or(big.NewInt(10), big.NewInt(-3))),
@@ -1101,12 +1101,12 @@ func TestInt_Or(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: true,
+					Abs: uint256.NewInt(10),
+					Neg: true,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: true,
+					Abs: uint256.NewInt(3),
+					Neg: true,
 				},
 			},
 			want: MustFromBig(new(big.Int).Or(big.NewInt(-10), big.NewInt(-3))),
@@ -1115,8 +1115,8 @@ func TestInt_Or(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			z := &Int{
-				abs: tt.fields.abs,
-				neg: tt.fields.neg,
+				Abs: tt.fields.abs,
+				Neg: tt.fields.neg,
 			}
 			if got := z.Or(tt.args.x, tt.args.y); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Int.Or() = %v, want %v", got, tt.want)
@@ -1149,12 +1149,12 @@ func TestInt_And(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: false,
+					Abs: uint256.NewInt(10),
+					Neg: false,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: false,
+					Abs: uint256.NewInt(3),
+					Neg: false,
 				},
 			},
 			want: MustFromBig(new(big.Int).And(big.NewInt(10), big.NewInt(3))),
@@ -1167,12 +1167,12 @@ func TestInt_And(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: true,
+					Abs: uint256.NewInt(10),
+					Neg: true,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: false,
+					Abs: uint256.NewInt(3),
+					Neg: false,
 				},
 			},
 			want: MustFromBig(new(big.Int).And(big.NewInt(-10), big.NewInt(3))),
@@ -1185,12 +1185,12 @@ func TestInt_And(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: false,
+					Abs: uint256.NewInt(10),
+					Neg: false,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: true,
+					Abs: uint256.NewInt(3),
+					Neg: true,
 				},
 			},
 			want: MustFromBig(new(big.Int).And(big.NewInt(10), big.NewInt(-3))),
@@ -1203,12 +1203,12 @@ func TestInt_And(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: true,
+					Abs: uint256.NewInt(10),
+					Neg: true,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: true,
+					Abs: uint256.NewInt(3),
+					Neg: true,
 				},
 			},
 			want: MustFromBig(new(big.Int).And(big.NewInt(-10), big.NewInt(-3))),
@@ -1217,8 +1217,8 @@ func TestInt_And(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			z := &Int{
-				abs: tt.fields.abs,
-				neg: tt.fields.neg,
+				Abs: tt.fields.abs,
+				Neg: tt.fields.neg,
 			}
 			if got := z.And(tt.args.x, tt.args.y); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Int.And() = %v, want %v", got, tt.want)
@@ -1251,12 +1251,12 @@ func TestInt_Quo(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: false,
+					Abs: uint256.NewInt(10),
+					Neg: false,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: false,
+					Abs: uint256.NewInt(3),
+					Neg: false,
 				},
 			},
 			want: MustFromBig(new(big.Int).Quo(big.NewInt(10), big.NewInt(3))),
@@ -1269,12 +1269,12 @@ func TestInt_Quo(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: true,
+					Abs: uint256.NewInt(10),
+					Neg: true,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: false,
+					Abs: uint256.NewInt(3),
+					Neg: false,
 				},
 			},
 			want: MustFromBig(new(big.Int).Quo(big.NewInt(-10), big.NewInt(3))),
@@ -1287,12 +1287,12 @@ func TestInt_Quo(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: false,
+					Abs: uint256.NewInt(10),
+					Neg: false,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: true,
+					Abs: uint256.NewInt(3),
+					Neg: true,
 				},
 			},
 			want: MustFromBig(new(big.Int).Quo(big.NewInt(10), big.NewInt(-3))),
@@ -1305,12 +1305,12 @@ func TestInt_Quo(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
-					neg: true,
+					Abs: uint256.NewInt(10),
+					Neg: true,
 				},
 				y: &Int{
-					abs: uint256.NewInt(3),
-					neg: true,
+					Abs: uint256.NewInt(3),
+					Neg: true,
 				},
 			},
 			want: MustFromBig(new(big.Int).Quo(big.NewInt(-10), big.NewInt(-3))),
@@ -1319,8 +1319,8 @@ func TestInt_Quo(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			z := &Int{
-				abs: tt.fields.abs,
-				neg: tt.fields.neg,
+				Abs: tt.fields.abs,
+				Neg: tt.fields.neg,
 			}
 			if got := z.Quo(tt.args.x, tt.args.y); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Int.Quo() = %v, want %v", got, tt.want)
@@ -1352,7 +1352,7 @@ func TestInt_Cmp(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
+					Abs: uint256.NewInt(10),
 				},
 			},
 			wantR: 0,
@@ -1365,7 +1365,7 @@ func TestInt_Cmp(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(10),
+					Abs: uint256.NewInt(10),
 				},
 			},
 			wantR: -1,
@@ -1378,7 +1378,7 @@ func TestInt_Cmp(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(4),
+					Abs: uint256.NewInt(4),
 				},
 			},
 			wantR: 1,
@@ -1391,7 +1391,7 @@ func TestInt_Cmp(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(0),
+					Abs: uint256.NewInt(0),
 				},
 			},
 			wantR: 1,
@@ -1404,7 +1404,7 @@ func TestInt_Cmp(t *testing.T) {
 			},
 			args: args{
 				x: &Int{
-					abs: uint256.NewInt(0),
+					Abs: uint256.NewInt(0),
 				},
 			},
 			wantR: 0,
@@ -1413,8 +1413,8 @@ func TestInt_Cmp(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			z := &Int{
-				abs: tt.fields.abs,
-				neg: tt.fields.neg,
+				Abs: tt.fields.abs,
+				Neg: tt.fields.neg,
 			}
 			if gotR := z.Cmp(tt.args.x); gotR != tt.wantR {
 				t.Errorf("Int.Cmp() = %v, want %v", gotR, tt.wantR)
