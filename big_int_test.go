@@ -39,8 +39,8 @@ func TestInt_ToBig(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			z := &Int{
-				abs: tt.fields.abs,
-				neg: tt.fields.neg,
+				Abs: tt.fields.abs,
+				Neg: tt.fields.neg,
 			}
 			if got := z.ToBig(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Int.ToBig() = %v, want %v", got, tt.want)
@@ -66,8 +66,8 @@ func TestFromBig(t *testing.T) {
 				x: big.NewInt(10),
 			},
 			want: &Int{
-				abs: uint256.NewInt(10),
-				neg: false,
+				Abs: uint256.NewInt(10),
+				Neg: false,
 			},
 			want1: false,
 		},
@@ -77,8 +77,8 @@ func TestFromBig(t *testing.T) {
 				x: big.NewInt(-10),
 			},
 			want: &Int{
-				abs: uint256.NewInt(10),
-				neg: true,
+				Abs: uint256.NewInt(10),
+				Neg: true,
 			},
 			want1: false,
 		},

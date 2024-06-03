@@ -37,8 +37,8 @@ func TestInt_Int64(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			z := &Int{
-				abs: tt.fields.abs,
-				neg: tt.fields.neg,
+				Abs: tt.fields.abs,
+				Neg: tt.fields.neg,
 			}
 			if got := z.Int64(); got != tt.want {
 				t.Errorf("Int.Int64() = %v, want %v", got, tt.want)

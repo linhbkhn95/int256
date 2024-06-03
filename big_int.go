@@ -10,8 +10,8 @@ var negativeOneBigInt = big.NewInt(-1)
 var zero = big.NewInt(0)
 
 func (z *Int) ToBig() *big.Int {
-	b := z.abs.ToBig()
-	if z.neg {
+	b := z.Abs.ToBig()
+	if z.Neg {
 		return b.Mul(b, negativeOneBigInt)
 	}
 	return b
