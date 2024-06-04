@@ -88,9 +88,7 @@ func MustFromHex(hex string) *Int {
 
 // Hex encodes z in 0x-prefixed or -0x-prefixed  hexadecimal form.
 func (z *Int) Hex() string {
-	if z.abs == nil {
-		return "<nil>"
-	}
+	z.initiateAbs()
 	if z.abs.IsZero() {
 		return "0x0"
 	}
