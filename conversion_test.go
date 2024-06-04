@@ -114,11 +114,6 @@ func initSamples() bool {
 	}
 
 	for i := 0; i < numSamples; i++ {
-		x32g := rnd.Uint32()
-		x32l := rnd.Uint32()
-		if x32g < x32l {
-			x32g, x32l = x32l, x32g
-		}
 		lp := newRandInt(4)
 		gp := newRandInt(4)
 		if gp.Cmp(&lp) < 0 {
