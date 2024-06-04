@@ -431,4 +431,18 @@ func TestDecimal(t *testing.T) {
 			t.Errorf("have '%v', want '%v'", have, want)
 		}
 	}
+	{ // min
+		mini, _ := FromHex("-0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
+		minb, _ := new(big.Int).SetString("-0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", 0)
+		if have, want := mini.Dec(), minb.Text(10); have != want {
+			t.Errorf("have '%v', want '%v'", have, want)
+		}
+	}
+	{
+		mini, _ := FromDecimal("-29999999999999999999")
+		minb, _ := new(big.Int).SetString("-29999999999999999999", 0)
+		if have, want := mini.Dec(), minb.Text(10); have != want {
+			t.Errorf("have '%v', want '%v'", have, want)
+		}
+	}
 }
