@@ -69,3 +69,55 @@ func GetTickAtSqrtRatio(sqrtPriceX96 *uint256.Int) (tick int, err error) {
     }
 }
 ```
+
+### Json Marshaling/UnMarshaling example
+
+```go
+type TickInfo struct {
+    Initialized  bool
+    LiquidityNet *int256.Int
+}
+
+type Pool struct {
+    PoolAddress *common.Address
+    Ticks       map[int]*TickInfo
+}
+
+func main() {
+    tick1Info := &TickInfo{
+        Initialized:  true,
+        LiquidityNet: int256.MustFromDecimal("-111000000000000000000000000000000000099990"),
+    }
+
+    tick2Info := &TickInfo{
+        Initialized:  true,
+        LiquidityNet: int256.MustFromDecimal("1110000000000440000000000000000000000099990"),
+    }
+    ticks := make(map[int]*TickInfo)
+    ticks[100] = tick2Info
+    ticks[-100] = tick1Info
+    poolAddr := common.HexToAddress("0x0000000000000000000000000000000000000000")
+    pool := &Pool{
+        PoolAddress: &poolAddr,
+        Ticks:       ticks,
+    }
+    data, err := json.Marshal(pool)
+    if err != nil {
+        fmt.Println(err)
+    } else {
+        // {"PoolAddress":"0x0000000000000000000000000000000000000000","Ticks":{"-100":{"Initialized":true,"LiquidityNet":"-111000000000000000000000000000000000099990"},"100":{"Initialized":true,"LiquidityNet":"1110000000000440000000000000000000000099990"}}}
+        fmt.Println(string(data))
+    }
+    newPool := &Pool{}
+    poolData := "{\"PoolAddress\":\"0x0000000000000000000000000000000000000000\",\"Ticks\":{\"-100\":{\"Initialized\":true,\"LiquidityNet\":\"-111000000000000000000000000000000000099990\"},\"100\":{\"Initialized\":true,\"LiquidityNet\":\"1110000000000440000000000000000000000099990\"}}}"
+    err = json.Unmarshal([]byte(poolData), &newPool)
+    if err != nil {
+        fmt.Println(err)
+    } else {
+		// -111000000000000000000000000000000000099990
+        fmt.Println(newPool.Ticks[-100].LiquidityNet.String())
+		// 1110000000000440000000000000000000000099990
+        fmt.Println(newPool.Ticks[100].LiquidityNet.String())
+    }
+}
+```
