@@ -366,6 +366,11 @@ func (z *Int) And(x, y *Int) *Int {
 	return z
 }
 
+// MostSignificantBit return the most significant bit of z, ignoring the bit or the sign
+func (z *Int) MostSignificantBit() uint8 {
+	return uint8(z.abs.BitLen() - 1)
+}
+
 // initiateAbs sets default value for `z.abs` value if is nil
 func (z *Int) initiateAbs() {
 	if z.abs == nil {
