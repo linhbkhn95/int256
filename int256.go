@@ -43,7 +43,7 @@ func (z *Int) SetInt64(x int64) *Int {
 		x = -x
 	}
 	if z.abs == nil {
-		panic("abs is nil")
+		z.abs = new(uint256.Int)
 	}
 	z.abs = z.abs.SetUint64(uint64(x))
 	z.neg = neg
@@ -53,7 +53,7 @@ func (z *Int) SetInt64(x int64) *Int {
 // SetUint64 sets z to x and returns z.
 func (z *Int) SetUint64(x uint64) *Int {
 	if z.abs == nil {
-		panic("abs is nil")
+		z.abs = new(uint256.Int)
 	}
 	z.abs = z.abs.SetUint64(x)
 	z.neg = false
